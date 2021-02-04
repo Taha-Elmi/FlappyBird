@@ -14,7 +14,9 @@ color = (r, g, b)
 
 white = (255, 255, 255)
 rect1 = pygame.Rect(100, 100, 100, 100)
-#clock = pygame.time.Clock()
+clock = pygame.time.Clock()
+
+dif = 5
 
 while True:
     
@@ -22,26 +24,19 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
-    color = (r, g, b)
             
     mainWindow.fill(white)
-    
-    pygame.draw.rect(mainWindow, color, rect1)
-    rect1.x += 5
-    rect1.y += 5
-    if rect1.x > 400:
-        rect1.x = -100
-        r = random.randint(0, 255)
-        g = random.randint(0, 255)
-        b = random.randint(0, 255)
-        #print(r, g, b, sep = ' ')
-    if rect1.y > 300:
-        rect1.y = -100
-        r = random.randint(0, 255)
-        g = random.randint(0, 255)
-        b = random.randint(0, 255)
-        #print(r, g, b, sep = ' ')
 
-    pygame.time.Clock().tick(30)
+    color = (r, g, b)
+    pygame.draw.rect(mainWindow, color, rect1)
+
+    rect1.x += dif
+    if rect1.x >= 300 or rect1.x <= 0:
+        dif *= -1
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+
+
+    clock.tick(30)
     pygame.display.update()
