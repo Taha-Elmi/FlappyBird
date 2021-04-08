@@ -18,6 +18,10 @@ background_image = pygame.image.load('photos\\background.png')
 background_image = pygame.transform.scale(background_image, (500, 400))
 bird1_image = pygame.image.load('photos\\bird1.png')
 bird1_image = pygame.transform.scale(bird1_image, (50, 50))
+upper_wall_image = pygame.image.load('photos\\wall.png')
+upper_wall_image = pygame.transform.scale(upper_wall_image, (40, 120))
+lower_wall_image = pygame.image.load('photos\\wall.png')
+lower_wall_image = pygame.transform.scale(lower_wall_image, (40, 120))
 
 clock = pygame.time.Clock()
 dif = 5
@@ -37,7 +41,8 @@ while True:
     mainWindow.blit(background_image, (0,0))
     pygame.draw.rect(mainWindow, black, upper_wall)
     pygame.draw.rect(mainWindow, black, lower_wall)
-    pygame.draw.rect(mainWindow, black, bird)
+    mainWindow.blit(upper_wall_image, (upper_wall.x, upper_wall.y))
+    mainWindow.blit(lower_wall_image, (lower_wall.x, lower_wall.y))
     mainWindow.blit(bird1_image, (bird.x, bird.y))
 
 
@@ -57,8 +62,10 @@ while True:
 
         upper_wall_height = random.randint(40, 200)
         upper_wall.h = upper_wall_height
+        upper_wall_image = pygame.transform.scale(upper_wall_image, (40, upper_wall.h))
         lower_wall.h = 240 - upper_wall_height
         lower_wall.y = 400 - lower_wall.h
+        lower_wall_image = pygame.transform.scale(lower_wall_image, (40, lower_wall.h))
 
 
     clock.tick(30)
