@@ -14,6 +14,11 @@ upper_wall = pygame.Rect(100, 0, 40, 120)
 lower_wall = pygame.Rect(100, 280, 40, 120)
 bird = pygame.Rect(130, 50, 50, 50)
 
+background_image = pygame.image.load('photos\\background.png')
+background_image = pygame.transform.scale(background_image, (500, 400))
+bird1_image = pygame.image.load('photos\\bird1.png')
+bird1_image = pygame.transform.scale(bird1_image, (50, 50))
+
 clock = pygame.time.Clock()
 dif = 5
 v_bird = 0
@@ -29,9 +34,12 @@ while True:
             
     mainWindow.fill(white)
 
+    mainWindow.blit(background_image, (0,0))
     pygame.draw.rect(mainWindow, black, upper_wall)
     pygame.draw.rect(mainWindow, black, lower_wall)
     pygame.draw.rect(mainWindow, black, bird)
+    mainWindow.blit(bird1_image, (bird.x, bird.y))
+
 
     upper_wall.x -= dif
     lower_wall.x -= dif
