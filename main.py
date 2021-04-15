@@ -18,16 +18,25 @@ background_image = pygame.image.load('photos\\background.png')
 background_image = pygame.transform.scale(background_image, (500, 400))
 bird1_image = pygame.image.load('photos\\bird1.png')
 bird1_image = pygame.transform.scale(bird1_image, (50, 50))
+bird2_image = pygame.image.load('photos\\bird2.png')
+bird2_image = pygame.transform.scale(bird2_image, (50, 50))
+bird3_image = pygame.image.load('photos\\bird3.png')
+bird3_image = pygame.transform.scale(bird3_image, (50, 50))
+bird4_image = pygame.image.load('photos\\bird4.png')
+bird4_image = pygame.transform.scale(bird4_image, (50, 50))
 upper_wall_image = pygame.image.load('photos\\wall.png')
 upper_wall_image = pygame.transform.scale(upper_wall_image, (40, 120))
 lower_wall_image = pygame.image.load('photos\\wall.png')
 lower_wall_image = pygame.transform.scale(lower_wall_image, (40, 120))
 
+bird_images = [bird1_image, bird2_image, bird3_image, bird4_image]
+
 clock = pygame.time.Clock()
-dif = 5
+v_wall = 5
 v_bird = 0
 a_bird = 1
-upper_wall_height = 120
+bird_images_index = 0
+bird_images_ratio = 5
 
 while True:
     
@@ -36,18 +45,18 @@ while True:
             pygame.quit()
             sys.exit()
             
-    mainWindow.fill(white)
 
     mainWindow.blit(background_image, (0,0))
-    pygame.draw.rect(mainWindow, black, upper_wall)
-    pygame.draw.rect(mainWindow, black, lower_wall)
     mainWindow.blit(upper_wall_image, (upper_wall.x, upper_wall.y))
     mainWindow.blit(lower_wall_image, (lower_wall.x, lower_wall.y))
-    mainWindow.blit(bird1_image, (bird.x, bird.y))
+    mainWindow.blit(bird_images[bird_images_index // bird_images_ratio], (bird.x, bird.y))
 
+    bird_images_index += 1
+    if bird_images_index >= (bird_images_ratio * len(bird_images)):
+        bird_images_index = 0
 
-    upper_wall.x -= dif
-    lower_wall.x -= dif
+    upper_wall.x -= v_wall
+    lower_wall.x -= v_wall
 
     v_bird += a_bird
     bird.y += v_bird
@@ -60,10 +69,9 @@ while True:
         upper_wall.x = 500
         lower_wall.x = 500
 
-        upper_wall_height = random.randint(40, 200)
-        upper_wall.h = upper_wall_height
+        upper_wall.h = random.randint(40, 200)
         upper_wall_image = pygame.transform.scale(upper_wall_image, (40, upper_wall.h))
-        lower_wall.h = 240 - upper_wall_height
+        lower_wall.h = 240 - upper_wall.h
         lower_wall.y = 400 - lower_wall.h
         lower_wall_image = pygame.transform.scale(lower_wall_image, (40, lower_wall.h))
 
