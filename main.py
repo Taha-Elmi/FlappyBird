@@ -12,7 +12,7 @@ white = (255, 255, 255)
 
 upper_wall = pygame.Rect(400, 0, 40, 120)
 lower_wall = pygame.Rect(400, 280, 40, 120)
-bird = pygame.Rect(130, 50, 50, 50)
+bird = pygame.Rect(130, 150, 50, 50)
 
 background_image = pygame.image.load('photos\\background.png')
 background_image = pygame.transform.scale(background_image, (500, 400))
@@ -41,7 +41,7 @@ bird_images_ratio = 5
 my_font = pygame.font.SysFont("Jokerman Regular", 50)
 gameover_text = my_font.render("Game Over", True, (255, 0, 0))
 
-state = "playing"
+state = "beginning"
 
 while True:
     
@@ -56,6 +56,11 @@ while True:
     mainWindow.blit(lower_wall_image, (lower_wall.x, lower_wall.y))
     mainWindow.blit(bird_images[bird_images_index // bird_images_ratio], (bird.x, bird.y))
 
+    if state == "beginning":
+        keypressed = pygame.key.get_pressed()
+        if keypressed[pygame.K_SPACE]:
+            state = "playing"
+            
     if state == "playing":
         bird_images_index += 1
         if bird_images_index >= (bird_images_ratio * len(bird_images)):
