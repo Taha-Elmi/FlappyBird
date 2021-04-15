@@ -10,8 +10,8 @@ pygame.display.set_caption('Flappy Bird')
 black = (0, 0, 0)
 white = (255, 255, 255)
 
-upper_wall = pygame.Rect(100, 0, 40, 120)
-lower_wall = pygame.Rect(100, 280, 40, 120)
+upper_wall = pygame.Rect(400, 0, 40, 120)
+lower_wall = pygame.Rect(400, 280, 40, 120)
 bird = pygame.Rect(130, 50, 50, 50)
 
 background_image = pygame.image.load('photos\\background.png')
@@ -38,6 +38,11 @@ a_bird = 1
 bird_images_index = 0
 bird_images_ratio = 5
 
+my_font = pygame.font.SysFont("Jokerman Regular", 50)
+gameover_text = my_font.render("Game Over", True, (255, 0, 0))
+
+state = "playing"
+
 while True:
     
     for event in pygame.event.get():
@@ -51,30 +56,36 @@ while True:
     mainWindow.blit(lower_wall_image, (lower_wall.x, lower_wall.y))
     mainWindow.blit(bird_images[bird_images_index // bird_images_ratio], (bird.x, bird.y))
 
-    bird_images_index += 1
-    if bird_images_index >= (bird_images_ratio * len(bird_images)):
-        bird_images_index = 0
+    if state == "playing":
+        bird_images_index += 1
+        if bird_images_index >= (bird_images_ratio * len(bird_images)):
+            bird_images_index = 0
 
-    upper_wall.x -= v_wall
-    lower_wall.x -= v_wall
+        upper_wall.x -= v_wall
+        lower_wall.x -= v_wall
 
-    v_bird += a_bird
-    bird.y += v_bird
+        v_bird += a_bird
+        bird.y += v_bird
 
-    keypressed = pygame.key.get_pressed()
-    if keypressed[pygame.K_SPACE]:
-        v_bird = -7
-    
-    if upper_wall.x <= -40:
-        upper_wall.x = 500
-        lower_wall.x = 500
+        keypressed = pygame.key.get_pressed()
+        if keypressed[pygame.K_SPACE]:
+            v_bird = -7
+        
+        if upper_wall.x <= -40:
+            upper_wall.x = 500
+            lower_wall.x = 500
 
-        upper_wall.h = random.randint(40, 200)
-        upper_wall_image = pygame.transform.scale(upper_wall_image, (40, upper_wall.h))
-        lower_wall.h = 240 - upper_wall.h
-        lower_wall.y = 400 - lower_wall.h
-        lower_wall_image = pygame.transform.scale(lower_wall_image, (40, lower_wall.h))
+            upper_wall.h = random.randint(40, 200)
+            upper_wall_image = pygame.transform.scale(upper_wall_image, (40, upper_wall.h))
+            lower_wall.h = 240 - upper_wall.h
+            lower_wall.y = 400 - lower_wall.h
+            lower_wall_image = pygame.transform.scale(lower_wall_image, (40, lower_wall.h))
 
+        if bird.colliderect(upper_wall) or bird.colliderect(lower_wall):
+            state = "game over"
+
+    if state == "game over":
+        mainWindow.blit(gameover_text, (160, 180))
 
     clock.tick(30)
     pygame.display.update()
