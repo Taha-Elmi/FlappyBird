@@ -31,6 +31,10 @@ lower_wall_image = pygame.transform.scale(lower_wall_image, (40, 120))
 
 bird_images = [bird1_image, bird2_image, bird3_image, bird4_image]
 
+score_file = open("best_score.txt","r")
+best_score = int(score_file.read())
+score = 0
+
 clock = pygame.time.Clock()
 v_wall = 5
 v_bird = 0
@@ -40,10 +44,11 @@ bird_images_ratio = 5
 
 my_font = pygame.font.SysFont("Jokerman Regular", 50)
 gameover_text = my_font.render("Game Over", True, (255, 0, 0))
+score_text = my_font.render("Your Score: " + str(score), True, (255, 0, 0))
+best_score_text = my_font.render("Best Score: " + str(best_score), True, (255, 0, 0))
 
 score_font = pygame.font.SysFont("Jokerman Regular", 30)
 score_renderer = my_font.render("0", True, (255, 0, 0))
-score = 0
 
 state = "beginning"
 
@@ -63,6 +68,8 @@ while True:
 
 
     if state == "beginning":
+        mainWindow.blit(best_score_text, (160, 100))
+
         keypressed = pygame.key.get_pressed()
         if keypressed[pygame.K_SPACE]:
             state = "playing"
