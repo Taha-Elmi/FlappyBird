@@ -41,6 +41,10 @@ bird_images_ratio = 5
 my_font = pygame.font.SysFont("Jokerman Regular", 50)
 gameover_text = my_font.render("Game Over", True, (255, 0, 0))
 
+score_font = pygame.font.SysFont("Jokerman Regular", 30)
+score_renderer = my_font.render("0", True, (255, 0, 0))
+score = 0
+
 state = "beginning"
 
 while True:
@@ -55,6 +59,8 @@ while True:
     mainWindow.blit(upper_wall_image, (upper_wall.x, upper_wall.y))
     mainWindow.blit(lower_wall_image, (lower_wall.x, lower_wall.y))
     mainWindow.blit(bird_images[bird_images_index // bird_images_ratio], (bird.x, bird.y))
+    mainWindow.blit(score_renderer, (30, 30))
+
 
     if state == "beginning":
         keypressed = pygame.key.get_pressed()
@@ -88,6 +94,10 @@ while True:
 
         if bird.colliderect(upper_wall) or bird.colliderect(lower_wall):
             state = "game over"
+
+        if bird.x == lower_wall.x + lower_wall.w :
+            score += 1
+            score_renderer = my_font.render(str(score), True, (255, 0, 0))
 
     if state == "game over":
         mainWindow.blit(gameover_text, (160, 180))
