@@ -45,6 +45,10 @@ bird_images_ratio = 5
 
 my_font = pygame.font.SysFont("Jokerman Regular", 50)
 gameover_text = my_font.render("Game Over", True, (255, 0, 0))
+pause_text = my_font.render("Pause", True, (255, 0, 0))
+
+my_font = pygame.font.SysFont("Jokerman Regular", 30)
+play_again_text = my_font.render("Press 'SPACE' to play again or 'ESCAPE' to exit", True, (255, 0, 0))
 
 my_font = pygame.font.SysFont("Jokerman Regular", 35)
 score_text = my_font.render("Your Score: " + str(score), True, (255, 0, 0))
@@ -91,6 +95,8 @@ while True:
         keypressed = pygame.key.get_pressed()
         if keypressed[pygame.K_SPACE]:
             v_bird = -7
+        if keypressed[pygame.K_p]:
+            state = "pause"
         
         if upper_wall.x <= -40:
             upper_wall.x = 500
@@ -102,13 +108,22 @@ while True:
             lower_wall.y = 400 - lower_wall.h
             lower_wall_image = pygame.transform.scale(lower_wall_image, (40, lower_wall.h))
 
-        if bird.colliderect(upper_wall) or bird.colliderect(lower_wall):
+        if bird.colliderect(upper_wall) or bird.colliderect(lower_wall) or bird.y < -30 or bird.y > 400:
             state = "game over"
 
         if bird.x == lower_wall.x + lower_wall.w :
             score += 1
             score_renderer = my_font.render(str(score), True, (255, 0, 0))
 
+
+    if state == "pause":
+        mainWindow.blit(pause_text, (200, 150))
+
+        keypressed = pygame.key.get_pressed()
+        if keypressed[pygame.K_SPACE]:
+            state = "playing"
+
+        
     if state == "game over":
 
         if score > best_score:
@@ -119,12 +134,27 @@ while True:
             
         
         mainWindow.blit(gameover_text, (160, 100))
+        mainWindow.blit(play_again_text, (25, 300))
 
         score_text = my_font.render("Your Score: " + str(score), True, (255, 0, 0))
         mainWindow.blit(score_text, (180, 160))
 
         best_score_text = my_font.render("Best Score: " + str(best_score), True, (255, 0, 0))
         mainWindow.blit(best_score_text, (180, 200))
+
+        keypressed = pygame.key.get_pressed()
+        if keypressed[pygame.K_SPACE]:
+            bird.x = 130
+            bird.y = 150
+            upper_wall.x = 400
+            lower_wall.x = 400
+            score = 0
+            score_renderer = my_font.render(str(score), True, (255, 0, 0))
+            state = "playing"
+        if keypressed[pygame.K_ESCAPE]:
+            pygame.quit()
+            sys.exit()
+        
 
     clock.tick(30)
     pygame.display.update()
