@@ -33,6 +33,7 @@ bird_images = [bird1_image, bird2_image, bird3_image, bird4_image]
 
 score_file = open("best_score.txt","r")
 best_score = int(score_file.read())
+score_file.close()
 score = 0
 
 clock = pygame.time.Clock()
@@ -44,11 +45,13 @@ bird_images_ratio = 5
 
 my_font = pygame.font.SysFont("Jokerman Regular", 50)
 gameover_text = my_font.render("Game Over", True, (255, 0, 0))
+
+my_font = pygame.font.SysFont("Jokerman Regular", 35)
 score_text = my_font.render("Your Score: " + str(score), True, (255, 0, 0))
 best_score_text = my_font.render("Best Score: " + str(best_score), True, (255, 0, 0))
-
-score_font = pygame.font.SysFont("Jokerman Regular", 30)
 score_renderer = my_font.render("0", True, (255, 0, 0))
+
+
 
 state = "beginning"
 
@@ -107,7 +110,21 @@ while True:
             score_renderer = my_font.render(str(score), True, (255, 0, 0))
 
     if state == "game over":
-        mainWindow.blit(gameover_text, (160, 180))
+
+        if score > best_score:
+            best_score = score
+            best_score_file = open("best_score.txt", "w")
+            best_score_file.write(str(best_score))
+            best_score_file.close()
+            
+        
+        mainWindow.blit(gameover_text, (160, 100))
+
+        score_text = my_font.render("Your Score: " + str(score), True, (255, 0, 0))
+        mainWindow.blit(score_text, (180, 160))
+
+        best_score_text = my_font.render("Best Score: " + str(best_score), True, (255, 0, 0))
+        mainWindow.blit(best_score_text, (180, 200))
 
     clock.tick(30)
     pygame.display.update()
